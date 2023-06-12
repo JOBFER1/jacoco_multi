@@ -26,6 +26,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       <artifactId>MultiplicationAndDivision</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>Calculator</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
   </dependencies>
   
   <build>
@@ -36,7 +43,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <executions>
           <execution>
             <id>report-aggregate</id>
-            <phase>test</phase>
+<!--            <phase>test</phase>-->
+			<phase>verify</phase>
             <goals>
               <goal>report-aggregate</goal>
             </goals>

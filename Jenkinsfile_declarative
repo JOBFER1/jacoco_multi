@@ -1,0 +1,42 @@
+pipeline{
+    agent any
+    triggers { 
+    	githubPush() 
+   	}     
+    stages{
+        stage ('Compilar') {
+            steps {
+                bat 'mvn clean verify'
+            }
+        }
+        stage('Test y Jacoco') {
+            steps {
+            	junit '**/*.xml'
+                jacoco()
+            }
+        }
+        stage('SonarQube') {
+            steps{
+                withSonarQubeEnv(installationName: 'Sonar 7.9.6', credentialsId: 'Token-Sonar') {
+                 bat 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage ('Nexus') {
+            steps {
+            	bat 'mvn clean deploy'
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+            dir("${env.WORKSPACE}@tmp") {
+                deleteDir()
+            }
+            dir("${env.WORKSPACE}@script") {
+                deleteDir()
+            } 
+        }
+    }    
+}
